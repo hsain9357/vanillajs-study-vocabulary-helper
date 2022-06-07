@@ -1,0 +1,147 @@
+*{
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+    /* outline: hotpink 2px solid; */
+    margin:0;
+    padding: 0;
+}
+
+
+body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+.repeatBtn{
+    height:40px;
+    width:40px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    position:absolute;
+    top:0;
+    left:0;
+}
+
+.repeatBtn img{
+max-height:100%;
+max-width:100%;
+object-fit: contain;
+}
+.containerWords{
+    /* background-color:darkgray ; */
+    background-image: linear-gradient(120deg,black,white);
+    background-image: -moz-linear-gradient(120deg,black,white);
+    background-image: -webkit-linear-gradient(120deg,black,white);
+    background-image: -o-linear-gradient(120deg,black,white);
+    width:100%;
+    height:102%;
+    display: flex;
+    flex-direction: column;
+    position:absolute;
+    align-items: center;
+    justify-content: flex-start;
+    padding:2em;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.containerWordInfo {
+    width:90vw;
+    background:white;
+    display:flex;
+    flex-direction:column;
+    justify-content: space-around;
+    margin-top:.8em;
+    border-radius: .9em;
+
+}
+
+.containerWordInfo .word {
+width:100%;
+position:relative;
+text-align: center;
+padding:.3em;
+text-transform:capitalize ;
+}
+.word .numberOfMeaning{
+    position: absolute;
+    top:0;
+    right:0;
+    color:red;
+}
+.containerWordInfo .sentence {
+width:100%;
+padding:0.5em;
+white-space: pre-wrap;      /* CSS3 */   
+   white-space: -moz-pre-wrap; /* Firefox */    
+   white-space: -pre-wrap;     /* Opera <7 */   
+   white-space: -o-pre-wrap;   /* Opera 7 */    
+   word-wrap: break-word;      /* IE */
+
+}
+
+.fullInfoOfWord{
+    height:100%;
+    width:100%;
+    overflow: scroll;
+    position: absolute;
+    background:chartreuse;
+    display:none;
+    flex-direction:column;
+    padding:1em;
+}
+.fullInfoOfWord.active{
+    display:flex;
+}
+.fullInfoOfWord div{
+    color:white;
+    text-transform: capitalize;
+}
+.fullInfoOfWord .phonemes{
+    
+    text-transform: none;
+}
+.fullInfoOfWord .wordFullInfoClose{
+    display:none;
+    left:0;
+}
+.fullInfoOfWord .wordFullInfoClose.active{
+    display:flex;
+}
+.fullInfoOfWord div{
+    text-align: center;
+}
+.fullInfoOfWord .mainword{
+    min-height: 60px;
+    text-align: center;
+}
+
+.fullInfoOfWord .phonemes{
+    height:50px;
+}
+.fullInfoOfWord .img{
+    width:80%;
+    margin:2em;
+    object-fit: contain;
+}
+
+.fullInfoOfWord .anotherSentences{
+    height:50px;
+}
+
+
+.stopBtn{
+    display:none;
+    position:absolute;
+    top:0;
+    left:0;
+    padding:1em 2em ;
+    border:black 3px solid;
+}
+.stopBtn.active{
+    display:block;
+}

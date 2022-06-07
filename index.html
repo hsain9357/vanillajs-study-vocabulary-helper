@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<link rel="shortcut icon" href="./imgs/bookIcon.png" type="image/png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#1E252C">
+  <meta name="theme-color" content="#1E252C">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/commonStyles.css">
+    <title>study vocabularies</title>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script defer src="/js/commonThings.js"></script>
+    <script defer src="/js/script.js" type="module"></script>
+</head>
+<body>
+    <!-- nav bar menu -->
+    <div class="menu pagesMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+<ul class="pagesList">
+    <li> <a href="/">
+     Insert a vocabulary page 📝 
+    </a></li>
+    <li>
+        <a href="/html/words.html">
+       revision for the saved vocabularies page 🔂 </a></li>
+</ul>    
+    <div class="main">
+        <input type="text"  class="mainWordInp" placeholder="Enter The Vocabulary That You Wannna Save it🏡 " class='mainword' id="mainWord"/>
+        <div class="optionsMenu menu ">
+            <span></span>
+             <span></span>
+              <span></span>
+        </div>
+        <ul class="options ">
+            <li>add the main sentence</li>
+            <li>add a picture</li>
+            <li>add the phonetics alphabet </li>
+            <li>add an another mean by sentence</li>
+            
+            <!-- 
+                
+                these apend by javascript file 'script.js'
+                <input type="text" class='mainSentenceInp' placeholder="Add aother meaning by sentence">
+            <input type="file" accept="image/png ,image/jpg" class='mainSentenceInp'>
+            <input type="text" class='mainSentenceInp' placeholder="Add Phoneme to the word">
+        <input type="text" class='mainSentenceInp  ' placeholder="the main sentece for this word"> -->
+        </ul>
+      
+        <button class="save-btn">save</button>
+        <div class="imgsContainer">
+        <div class="menu closeImgContainer close">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="submitChoiceToChooseImg">ok</div>
+        <div class="loading ">loading...</div>
+        </div>
+        
+ </div>
+
+</body>
+</html>
+  

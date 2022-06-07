@@ -1,0 +1,20 @@
+{
+  "background_color": "blue",
+  "short_name": "study vocabularies",
+  "description": "save vocabularies and remember them here",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "./imgs/bookIcon.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "./imgs/bookIcon32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ],
+  "name": "study-vocabularies-helper",
+  "start_url": "./index.html"
+}
