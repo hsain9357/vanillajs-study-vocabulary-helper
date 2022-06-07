@@ -1,2 +1,2 @@
 # study-vocabularies-helper
-this webApp will help you remember vocabularie
+this webApp will help you remember vocabularies
