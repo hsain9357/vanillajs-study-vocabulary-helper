@@ -91,11 +91,11 @@ class allOprations {
     element.addEventListener("click", () => {
       this.clearPreviousDatafromFullInfoWord();
       const numberElement = parseInt(element.getAttribute("number"));
-      this.appendFullInfoFun(numberElement);
+      this.appendFullInfoFun(numberElement,false,true,true);
     });
   }
 
-  appendFullInfoFun(numberElement, shouldPlayAudio = false,shouldAppendPlayButton = true) {
+  appendFullInfoFun(numberElement, shouldPlayAudio = false,shouldAppendPlayButton = true,shouldMakeCloseButtonVisable=false) {
     const mainword = document.querySelector(".mainword");
     const phonemes = document.querySelector(".phonemes");
     const mainSentence = document.querySelector(".mainSentence");
@@ -125,7 +125,10 @@ class allOprations {
       hearIt.onclick = () => {
         audio.play();
       };
-      fullInfoOfWord.appendChild(hearIt);  
+        if (shouldMakeCloseButtonVisable) {
+          wordFullInfoCloseBTN.classList.add('active')  
+        }
+        fullInfoOfWord.appendChild(hearIt);
       }
       
     }
@@ -145,6 +148,7 @@ class allOprations {
         fullInfoOfWord.appendChild(anotherSentenceElement);
       });
     }
+    
     fullInfoOfWord.classList.add("active");
   }
 
