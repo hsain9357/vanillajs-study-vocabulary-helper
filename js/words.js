@@ -64,7 +64,7 @@ class allOprations {
       numberOfMeaning.className = "numberOfMeaning";
       if (mainInfo.numberOfMeaninig === 0) {
       } else {
-        numberOfMeaning.innerText = mainInfo.numberOfMeaninig;
+        numberOfMeaning.innerText = i;
       }
       word.appendChild(numberOfMeaning);
 
@@ -75,8 +75,29 @@ class allOprations {
 
       containerWordInfo.appendChild(sentence);
       containerWords.appendChild(containerWordInfo);
+      const wordTime = new Date(mainInfo.date);
+      const currentDate = new Date();
+      const difference =Math.floor(( currentDate.getTime() -  wordTime.getTime() )/ 86400000); 
 
-      // this function  'openFullInfoAboutTheWord ' make the pop-up
+      
+      
+      switch (difference) {
+        case 0:
+          break;
+          case 1:
+          break;
+
+          case 7:
+          break;
+
+          case 30:
+          break;
+
+        default:
+          containerWordInfo.style.display = 'none' ;
+          break;
+      }
+      // // this function  'openFullInfoAboutTheWord ' make the pop-up
       //  show all info about the word
       // like the phonemes and all the others meaning of it
 
