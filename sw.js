@@ -1,5 +1,5 @@
 importScripts(
-  "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js"
+  'https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js'
 );
 workbox.routing.registerRoute(
   /\.(?:css|html|js)$/,
@@ -13,7 +13,6 @@ workbox.routing.registerRoute(
     ],
   })
 );
-
 workbox.routing.registerRoute(
   /\.(?:png|jpg|jpeg|gif|bmp|webp|svg|ico)$/,
   new workbox.strategies.NetworkFirst({
@@ -26,3 +25,5 @@ workbox.routing.registerRoute(
     ],
   })
 );
+
+

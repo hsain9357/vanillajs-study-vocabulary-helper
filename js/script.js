@@ -9,13 +9,10 @@ const submitChoiceToChooseImg = document.querySelector(
   ".submitChoiceToChooseImg"
 );
 const loadingText = document.querySelector(".loading");
-
 // this number in localStorage help to get how many items saved in localStorage
 let numberOfVocabularies = localStorage.getItem("number");
-
 // this var use when the api to add pic in to save it in localStorage
 var imgChoosedUrl;
-
 //this class handle all click events to elements and check the number of the words that saved in localStorage
 class putGeniralEventToElement {
   constructor() {
@@ -71,9 +68,8 @@ class Demo {
   }
 
   startEvents() {
-    const putGeniralEvent = new putGeniralEventToElement();
+new putGeniralEventToElement();
   }
-
 
   //this function receives the number of the item  in the html
   //you can see them in html or here they are
@@ -84,7 +80,6 @@ class Demo {
   //if the first one the function gonna definition input
   //and it gonna save it in localStorage by others function they are self-explantory
   //and same with  others
-
   addTaskToListInputs(inputNum) {
     switch (inputNum) {
       case 0:
@@ -278,7 +273,7 @@ class Demo {
       pic: imgChoosed,
       anotherSentenceWithNewMeaning: anotherMeaninigSentecesArr,
       randomColor: randomColor,
-      date:new Date(),
+      date: new Date(),
     };
 
     let numberOfVocabulariesInLocalStorage = parseInt(
@@ -304,7 +299,7 @@ class Demo {
     );
 
     if (!buttonsToRemoveInputs) return;
-    buttonsToRemoveInputs.forEach((item, idx) => {
+    buttonsToRemoveInputs.forEach((item) => {
       item.addEventListener("click", () => {
         let classOfInput = item.getAttribute("classOfInput");
         const containerDiv = document.querySelector(

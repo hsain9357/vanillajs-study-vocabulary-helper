@@ -1,0 +1,66 @@
+.pagesMenu span {
+	background-color:black;
+}
+.containerRows{
+	display:grid;
+	background-color:blue;
+	min-height:100vh;
+	width:100vw;
+	grid-template-columns:50vw  50vw;
+	justify-content:center;
+	gap:10px;
+
+}
+.containerRows > div {
+display:flex;
+align-items:center;
+justify-content:center;
+}
+.containerRows > div ul{
+height:100%;
+width:100%;
+display:flex	;
+flex-direction:column;
+justify-content:start;
+align-items:center;
+gap:1em;
+padding:1em;
+}
+
+.containerRows > div ul li{
+	width:100%;
+	background-color:white;
+	position:relative;
+	display:flex;
+	align-items:center;
+	justify-content:start;
+	line-height:30px;
+	padding:.3em;
+
+}	
+.containerRows > div ul li.wrong{
+	background-color:yellow;
+}
+.containerRows > div ul li.correct{
+	background-color:pink;
+}
+.containerRows > div ul li::before,
+.containerRows > div ul li::after
+{
+	content:'';
+	background-color:green;
+	position:absolute;
+	height:30px;
+	width:30px;
+	left:-30px;
+	border-radius:50%;
+}
+
+
+.containerRows > div ul li.choosed::after
+{
+	background-color:white;
+	height:20px;
+	width:20px;
+	left:-25px;
+}

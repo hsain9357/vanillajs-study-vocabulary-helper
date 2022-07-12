@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+  <title>Document</title>
+</head>
+<body>
+  <script type="text/javascript" charset="utf-8">
+  const arr = new Array() ; 
+    for(let i = 0 ; i < localStorage.getItem('number'); i++){
+      const item = localStorage.getItem(`word.${i}`);
+      arr.push(item)
+    }
+    const h = document.createElement('h')
+    h.innerText = arr; 
+    document.body.appendChild(h)
+  </script>
+</body>
+</html>

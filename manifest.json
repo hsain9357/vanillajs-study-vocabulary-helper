@@ -1,6 +1,8 @@
 {
+"version": "1",
+"manifest_version":2,
   "background_color": "blue",
-  "short_name": "study vocabularies",
+  "short_name": "study",
   "description": "save vocabularies and remember them here",
   "display": "standalone",
   "icons": [
@@ -15,6 +17,6 @@
       "type": "image/png"
     }
   ],
-  "name": "study-vocabularies-helper",
+  "name": "study",
   "start_url": "./index.html"
 }

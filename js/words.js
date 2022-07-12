@@ -3,18 +3,26 @@ const fullInfoOfWord = document.querySelector(".fullInfoOfWord");
 const wordFullInfoCloseBTN = document.querySelector(".wordFullInfoClose");
 const repeatBtn = document.querySelector("button.repeatBtn");
 const stopBtn = document.querySelector("button#stopBtn");
-var shouldInteravl = false;
+const pauseBtn = document.querySelector("button.pauseBtn ");
+//localStorage.setItem('number','121')
+//localStorage.removeItem('word.122')
 class allOprations {
   constructor() {
     // mybe you thought why i do that
     // the initialize function
     // release instenly when i use the class you can see it in the buttom of this script
-
+    this.shouldInterval = false;
+    this.numbersForInterval = [];
+    this.currentNumberToFetch = 0;
     this.initialize();
   }
   initialize() {
-    this.allEvets();
-    this.fetchLocalStorage();
+    try {
+      this.allEvets();
+      this.fetchLocalStorage();
+    } catch (e) {
+      alert(e);
+    }
   }
   allEvets() {
     wordFullInfoCloseBTN.addEventListener("click", () => {
@@ -24,14 +32,17 @@ class allOprations {
       let timeToRepeat = prompt("speed per second", 5);
       if (!timeToRepeat) return;
       timeToRepeat = timeToRepeat * 1000;
-      shouldInteravl = true;
+      this.shouldInterval = true;
       this.startRepeatSavedWords(timeToRepeat);
     };
     stopBtn.onclick = () => {
       this.clearPreviousDatafromFullInfoWord();
       stopBtn.classList.remove("active");
       wordFullInfoCloseBTN.classList.add("active");
-      shouldInteravl = false;
+      this.shouldInterval = false;
+    };
+    pauseBtn.onclick = () => {
+      this.togglePause();
     };
   }
 
@@ -46,15 +57,20 @@ class allOprations {
     // </div>;
 
     this.theNumberOfWords = parseInt(localStorage.getItem("number"));
-    if(!this.theNumberOfWords) {
-      containerWords.append('Empty!')
+    if (!this.theNumberOfWords) {
+      containerWords.append("Empty!");
     }
     for (let i = this.theNumberOfWords; i >= 1; i--) {
       let mainInfo = JSON.parse(localStorage.getItem(`word.${i}`));
 
       const containerWordInfo = document.createElement("div");
       containerWordInfo.setAttribute("number", `${i}`);
-      containerWordInfo.style.border = `6px solid #${mainInfo.randomColor}`;
+      if (mainInfo.randomColor.length == 5) {
+        containerWordInfo.style.border = `6px solid #${mainInfo.randomColor}1`;
+      } else {
+        containerWordInfo.style.border = `6px solid #${mainInfo.randomColor}`;
+      }
+
       containerWordInfo.className = "containerWordInfo";
       const word = document.createElement("div");
       word.className = "word";
@@ -62,7 +78,9 @@ class allOprations {
 
       const numberOfMeaning = document.createElement("numberOfMeaning");
       numberOfMeaning.className = "numberOfMeaning";
+      // changed the number of meaning to the number of current word
       if (mainInfo.numberOfMeaninig === 0) {
+        numberOfMeaning.innerText = i;
       } else {
         numberOfMeaning.innerText = i;
       }
@@ -77,24 +95,29 @@ class allOprations {
       containerWords.appendChild(containerWordInfo);
       const wordTime = new Date(mainInfo.date);
       const currentDate = new Date();
-      const difference =Math.floor(( currentDate.getTime() -  wordTime.getTime() )/ 86400000); 
+      const difference = Math.floor(
+        (currentDate.getTime() - wordTime.getTime()) / 86400000
+      );
 
-      
-      
       switch (difference) {
         case 0:
+          this.numbersForInterval.push(i);
           break;
-          case 1:
+        case 1:
+          this.numbersForInterval.push(i);
           break;
 
-          case 7:
+        case 7:
+          this.numbersForInterval.push(i);
           break;
 
-          case 30:
+        case 30:
+          this.numbersForInterval.push(i);
           break;
 
         default:
-          containerWordInfo.style.display = 'none' ;
+          containerWordInfo.style.display = "none";
+          //         this.numbersForInterval.push(i);
           break;
       }
       // // this function  'openFullInfoAboutTheWord ' make the pop-up
@@ -112,56 +135,72 @@ class allOprations {
     element.addEventListener("click", () => {
       this.clearPreviousDatafromFullInfoWord();
       const numberElement = parseInt(element.getAttribute("number"));
-      this.appendFullInfoFun(numberElement,false,true,true);
+      this.appendFullInfoFun(numberElement, false, true, true);
     });
   }
 
-  appendFullInfoFun(numberElement, shouldPlayAudio = false,shouldAppendPlayButton = true,shouldMakeCloseButtonVisable=false) {
+  appendFullInfoFun(
+    numberElement,
+    shouldPlayAudio = false,
+    shouldAppendPlayButton = true,
+    shouldMakeCloseButtonVisable = false
+  ) {
     const mainword = document.querySelector(".mainword");
     const phonemes = document.querySelector(".phonemes");
     const mainSentence = document.querySelector(".mainSentence");
 
     const mainInfo = JSON.parse(localStorage.getItem(`word.${numberElement}`));
-    mainword.innerText = mainInfo.mainworld;
-    if (mainInfo.phoneme) {
+    if (mainInfo && mainInfo.mainworld) {
+      mainword.innerText = mainInfo.mainworld;
+    }
+
+    if (mainInfo && mainInfo.phoneme) {
       phonemes.innerText = "phonetics :" + mainInfo.phoneme;
     }
-    fullInfoOfWord.style.background = `#${mainInfo.randomColor}`;
-    mainSentence.innerText = mainInfo.mainSentence;
-    if (mainInfo.audio) {
-      const audio = document.createElement("audio");
+    if (mainInfo && mainInfo.randomColor) {
+      if (mainInfo.randomColor.length == 5) {
+        fullInfoOfWord.style.background = `#${mainInfo.randomColor}1`;
+      } else {
+        fullInfoOfWord.style.background = `#${mainInfo.randomColor}`;
+      }
+    }
+    if (mainInfo && mainInfo.mainSentence) {
+      mainSentence.innerText = mainInfo.mainSentence;
+    }
 
+    if (mainInfo && mainInfo.audio) {
+      const audio = document.createElement("audio");
+      audio.loop = false;
       audio.src = mainInfo.audio;
       if (shouldPlayAudio) {
         audio.play();
       }
       if (shouldAppendPlayButton) {
-      const hearIt = document.createElement("button");
-      const styleHearIt = hearIt.style;
-      styleHearIt.width = "50px";
-      styleHearIt.height = "50px";
+        const hearIt = document.createElement("button");
+        const styleHearIt = hearIt.style;
+        styleHearIt.width = "50px";
+        styleHearIt.height = "50px";
 
-      hearIt.innerHTML = "&#9654;";
-      hearIt.className = "hearIt";
-      hearIt.onclick = () => {
-        audio.play();
-      };
+        hearIt.innerHTML = "&#9654;";
+        hearIt.className = "hearIt";
+        hearIt.onclick = () => {
+          audio.play();
+        };
         if (shouldMakeCloseButtonVisable) {
-          wordFullInfoCloseBTN.classList.add('active')  
+          wordFullInfoCloseBTN.classList.add("active");
         }
         fullInfoOfWord.appendChild(hearIt);
       }
-      
     }
 
-    if (mainInfo.pic) {
+    if (mainInfo && mainInfo.pic) {
       const newImg = document.createElement("img");
       newImg.src = mainInfo.pic;
       newImg.className = "img";
       fullInfoOfWord.appendChild(newImg);
     }
 
-    if (mainInfo.numberOfMeaninig) {
+    if (mainInfo && mainInfo.numberOfMeaninig) {
       mainInfo.anotherSentenceWithNewMeaning.forEach((item) => {
         const anotherSentenceElement = document.createElement("div");
         anotherSentenceElement.className = "anotherSentences";
@@ -169,10 +208,18 @@ class allOprations {
         fullInfoOfWord.appendChild(anotherSentenceElement);
       });
     }
-    
+
     fullInfoOfWord.classList.add("active");
   }
 
+  togglePause() {
+    this.isPaused = !this.isPaused;
+    if (this.isPaused) {
+      pauseBtn.innerText = "continue";
+    } else {
+      pauseBtn.innerText = "pause";
+    }
+  }
   // this clear the img and others stuff from
   // the pop-up ".fullInfoOfWord" that i told you about it recently
   // or if you didn't read it you can check it out above
@@ -198,27 +245,48 @@ class allOprations {
   startRepeatSavedWords(timeToRepeat) {
     let repeatIntervalFun = null;
 
-    var currentNumberToFetch = 1;
-
     const interavlOprations = () => {
-      if (!shouldInteravl) {
-        clearInterval(repeatIntervalFun);
-        stopBtn.classList.remove("active");
-        currentNumberToFetch = 1;
-        return;
-      }
+      if (!this.isPaused) {
+        if (!this.shouldInterval) {
+          this.clearPreviousDatafromFullInfoWord();
+          this.numbersForInterval.reverse();
+          stopBtn.classList.remove("active");
+          pauseBtn.classList.remove("active");
+          wordFullInfoCloseBTN.classList.add("active");
+          this.currentNumberToFetch = 0;
+          clearInterval(repeatIntervalFun);
+          return;
+        }
 
-      this.clearPreviousDatafromFullInfoWord();
+        this.clearPreviousDatafromFullInfoWord();
 
-      this.appendFullInfoFun(currentNumberToFetch, true,false);
-      if (currentNumberToFetch == this.theNumberOfWords) {
-        currentNumberToFetch = 1;
-      } else {
-        currentNumberToFetch += 1;
+        this.appendFullInfoFun(
+          this.numbersForInterval[this.currentNumberToFetch],
+          true,
+          false
+        );
+        if (this.currentNumberToFetch == this.numbersForInterval.length) {
+          this.currentNumberToFetch = 0;
+          this.clearPreviousDatafromFullInfoWord();
+          pauseBtn.classList.remove("active");
+          wordFullInfoCloseBTN.classList.add("active");
+          this.shouldInterval = false;
+        } else {
+          this.currentNumberToFetch += 1;
+        }
       }
     };
+    this.numbersForInterval.reverse();
     stopBtn.classList.add("active");
+    pauseBtn.classList.add("active");
     wordFullInfoCloseBTN.classList.remove("active");
+    this.clearPreviousDatafromFullInfoWord();
+    this.appendFullInfoFun(
+      this.numbersForInterval[this.currentNumberToFetch],
+      true,
+      false
+    );
+    this.currentNumberToFetch = 1;
     repeatIntervalFun = setInterval(interavlOprations, timeToRepeat);
   }
 }
