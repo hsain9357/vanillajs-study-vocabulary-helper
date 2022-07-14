@@ -4,6 +4,8 @@ const wordFullInfoCloseBTN = document.querySelector(".wordFullInfoClose");
 const repeatBtn = document.querySelector("button.repeatBtn");
 const stopBtn = document.querySelector("button#stopBtn");
 const pauseBtn = document.querySelector("button.pauseBtn ");
+const categoriesContainer = document.querySelector(".categoriesContainer");
+const bakcArrowButton = document.querySelector(".bakcArrowButton");
 //localStorage.setItem('number','121')
 //localStorage.removeItem('word.122')
 class allOprations {
@@ -14,19 +16,62 @@ class allOprations {
     this.shouldInterval = false;
     this.numbersForInterval = [];
     this.currentNumberToFetch = 0;
+    this.currentCategory = undefined;
     this.initialize();
   }
   initialize() {
-    try {
-      this.allEvets();
-      this.fetchLocalStorage();
-    } catch (e) {
-      alert(e);
+    const categoriesInLocalStorage = JSON.parse(
+      localStorage.getItem("listCategories")
+    );
+    this.createCategory("word");
+    if (categoriesInLocalStorage) {
+      categoriesInLocalStorage.forEach((item) => {
+        this.createCategory(item);
+      });
     }
+    this.allEvets();
   }
+  createCategory(nameOfCategory) {
+    const categoryDiv = document.createElement("div");
+    const pElement = document.createElement("p");
+    const imgForCategory = document.createElement("img");
+    categoryDiv.className = "category";
+    categoryDiv.setAttribute("category", nameOfCategory);
+    pElement.className = "categoryName";
+    pElement.innerText = nameOfCategory;
+    imgForCategory.src = "/imgs/file.png";
+    imgForCategory.className = "categoryImg ";
+	  if(nameOfCategory == 'word'){
+		  pElement.innerText = 'general'
+	  }
+    categoryDiv.append(imgForCategory, pElement);
+    categoriesContainer.append(categoryDiv);
+    const allCategoriesElements = document.querySelectorAll(".category");
+    allCategoriesElements.forEach((item) => {
+      item.addEventListener("click", () => {
+        const clickedCategory = item.getAttribute("category");
+        if (clickedCategory === "word") {
+          // number in localStorage means unclassified (the user didn't specify it in a category)
+          bakcArrowButton.classList.add("active");
+          categoriesContainer.classList.remove("active");
+          const numberOfWordToFetch = parseInt(localStorage.getItem("number"));
+          this.fetchLocalStorage(clickedCategory, numberOfWordToFetch);
+        } else {
+          bakcArrowButton.classList.add("active");
+          categoriesContainer.classList.remove("active");
+          const numberOfWordToFetch = parseInt(
+            localStorage.getItem(`numberOf.${clickedCategory}`)
+          );
+          this.fetchLocalStorage(clickedCategory, numberOfWordToFetch);
+        }
+      });
+    });
+  }
+
   allEvets() {
     wordFullInfoCloseBTN.addEventListener("click", () => {
       fullInfoOfWord.classList.remove("active");
+      bakcArrowButton.classList.add("active");
     });
     repeatBtn.onclick = () => {
       let timeToRepeat = prompt("speed per second", 5);
@@ -44,9 +89,13 @@ class allOprations {
     pauseBtn.onclick = () => {
       this.togglePause();
     };
+    bakcArrowButton.onclick = () => {
+      bakcArrowButton.classList.remove("active");
+      categoriesContainer.classList.add("active");
+    };
   }
 
-  fetchLocalStorage() {
+  fetchLocalStorage(category, numberOfWordToFetch) {
     // all of these make this
     // <div class="containerWordInfo">
     //   <div class="word">
@@ -56,12 +105,15 @@ class allOprations {
     //   </div>
     // </div>;
 
-    this.theNumberOfWords = parseInt(localStorage.getItem("number"));
-    if (!this.theNumberOfWords) {
+    this.currentCategory = category;
+    document
+      .querySelectorAll(".containerWordInfo")
+      .forEach((item) => item.remove());
+    if (!numberOfWordToFetch) {
       containerWords.append("Empty!");
     }
-    for (let i = this.theNumberOfWords; i >= 1; i--) {
-      let mainInfo = JSON.parse(localStorage.getItem(`word.${i}`));
+    for (let i = numberOfWordToFetch; i >= 1; i--) {
+      let mainInfo = JSON.parse(localStorage.getItem(`${category}.${i}`));
 
       const containerWordInfo = document.createElement("div");
       containerWordInfo.setAttribute("number", `${i}`);
@@ -116,18 +168,18 @@ class allOprations {
           break;
 
         default:
-          containerWordInfo.style.display = "none";
-          //         this.numbersForInterval.push(i);
+        //  containerWordInfo.style.display = "none";
+         this.numbersForInterval.push(i);
           break;
       }
       // // this function  'openFullInfoAboutTheWord ' make the pop-up
       //  show all info about the word
       // like the phonemes and all the others meaning of it
 
-      this.openFullInfoAboutTheWord(containerWordInfo);
+      this.openFullInfoAboutTheWord(containerWordInfo, category);
     }
   }
-  openFullInfoAboutTheWord(element) {
+  openFullInfoAboutTheWord(element, category) {
     // it's seme complex but its work is simple just fetch
     // the localStorage and put data the container of it
     // i already put style to the container you can find it
@@ -135,7 +187,7 @@ class allOprations {
     element.addEventListener("click", () => {
       this.clearPreviousDatafromFullInfoWord();
       const numberElement = parseInt(element.getAttribute("number"));
-      this.appendFullInfoFun(numberElement, false, true, true);
+      this.appendFullInfoFun(numberElement, false, true, true, category);
     });
   }
 
@@ -143,13 +195,16 @@ class allOprations {
     numberElement,
     shouldPlayAudio = false,
     shouldAppendPlayButton = true,
-    shouldMakeCloseButtonVisable = false
+    shouldMakeCloseButtonVisable = false,
+    category = "word"
   ) {
     const mainword = document.querySelector(".mainword");
     const phonemes = document.querySelector(".phonemes");
     const mainSentence = document.querySelector(".mainSentence");
-
-    const mainInfo = JSON.parse(localStorage.getItem(`word.${numberElement}`));
+    bakcArrowButton.className = "bakcArrowButton";
+    const mainInfo = JSON.parse(
+      localStorage.getItem(`${category}.${numberElement}`)
+    );
     if (mainInfo && mainInfo.mainworld) {
       mainword.innerText = mainInfo.mainworld;
     }
@@ -255,6 +310,7 @@ class allOprations {
           wordFullInfoCloseBTN.classList.add("active");
           this.currentNumberToFetch = 0;
           clearInterval(repeatIntervalFun);
+	bakcArrowButton.className = 'bakcArrowButton active' 
           return;
         }
 
@@ -263,7 +319,9 @@ class allOprations {
         this.appendFullInfoFun(
           this.numbersForInterval[this.currentNumberToFetch],
           true,
-          false
+          false,
+          true,
+          this.currentCategory
         );
         if (this.currentNumberToFetch == this.numbersForInterval.length) {
           this.currentNumberToFetch = 0;
@@ -284,7 +342,9 @@ class allOprations {
     this.appendFullInfoFun(
       this.numbersForInterval[this.currentNumberToFetch],
       true,
-      false
+      false,
+      true,
+      this.currentCategory
     );
     this.currentNumberToFetch = 1;
     repeatIntervalFun = setInterval(interavlOprations, timeToRepeat);

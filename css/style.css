@@ -114,7 +114,18 @@ button{
   font-style: bold;
   color: red;
 }
-
+.options .listCategoriesContainer{
+width:100%;
+display:flex;
+}
+.options .listCategoriesContainer li{
+	display:inline-block ;
+	max-width:100px;
+	text-transform:none;
+}
+.options .listCategoriesContainer li.choosed{
+	box-shadow: #7FFF00 0 0 17px 10px inset;
+}
 .optionsMenu{
   top: 0;
   position: absolute;

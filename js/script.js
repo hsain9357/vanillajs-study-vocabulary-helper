@@ -64,11 +64,13 @@ class Demo {
     this._checkPhonemes = true;
     this._checkTheDefinition = true;
     this._numberOfAnotherSentence = 1;
+    this._checkInputCategory = true;
+    this._currentCategory = undefined;
     this.startEvents();
   }
 
   startEvents() {
-new putGeniralEventToElement();
+    new putGeniralEventToElement();
   }
 
   //this function receives the number of the item  in the html
@@ -118,6 +120,11 @@ new putGeniralEventToElement();
           type: "text",
         });
         this._numberOfAnotherSentence += 1;
+        break;
+      case 4:
+        if (!this._checkInputCategory) return;
+        this.setCategory();
+        this._checkInputCategory = false;
         break;
     }
   }
@@ -238,7 +245,7 @@ new putGeniralEventToElement();
       "input#anotherSentenceInp"
     );
 
-    if (!this.mainword) return alert("please Inter the vocabulary to save");
+    if (!this.mainword) return alert("please Enter the vocabulary to save");
     let anotherMeaninigSentecesArr = [];
     anotherSentenceInp.forEach((item) => {
       if (item.value) {
@@ -284,14 +291,54 @@ new putGeniralEventToElement();
   }
 
   saveToLocalStorage(params, currentNumberOfWords) {
-    localStorage.setItem(
-      `word.${currentNumberOfWords}`,
-      JSON.stringify(params)
-    );
-    localStorage.setItem("number", currentNumberOfWords.toString());
-    window.location.reload();
-  }
+    const allCategories = JSON.parse(localStorage.getItem("listCategories"));
+    if (this._currentCategory) {
+      if (allCategories) {
+        if (allCategories.includes(this._currentCategory)) {
+          let numberOfCurrentCategory = parseInt(
+            localStorage.getItem(`numberOf.${this._currentCategory}`)
+          );
+          numberOfCurrentCategory++;
+          localStorage.setItem(
+            `${this._currentCategory}.${numberOfCurrentCategory}`,
+            JSON.stringify(params)
+          );
 
+          localStorage.setItem(
+            `numberOf.${this._currentCategory}`,
+            numberOfCurrentCategory.toString()
+          );
+          window.location.reload();
+        } else {
+          //if current category doesn't includes with categories array in localStorage not includes i localStorage
+          allCategories.push(this._currentCategory);
+          localStorage.setItem("listCategories", JSON.stringify(allCategories));
+          localStorage.setItem(`numberOf.${this._currentCategory}`, "1");
+          localStorage.setItem(
+            `${this._currentCategory}.1`,
+            JSON.stringify(params)
+          );
+
+          window.location.reload();
+        }
+      } else {
+	     //if the user select category and there is no  categories array in localStorage  
+        localStorage.setItem(
+          "listCategories",
+		JSON.stringify([])
+        );
+        return   this.saveToLocalStorage(params, currentNumberOfWords); 
+      }
+    } else {
+	    // if the user didn'nt select any category
+      localStorage.setItem(
+        `word.${currentNumberOfWords}`,
+        JSON.stringify(params)
+      );
+      localStorage.setItem("number", currentNumberOfWords.toString());
+      window.location.reload();
+    }
+  }
   //this function add events to the buttons in .options it gonna remove the container of it and the container contain the input and the button that used to remove
   removeInputs() {
     const buttonsToRemoveInputs = document.querySelectorAll(
@@ -322,6 +369,67 @@ new putGeniralEventToElement();
       });
     });
     return;
+  }
+
+  setCategory() {
+    const containerCategories = document.createElement("div");
+    const listCategoriesContainer = document.createElement("ul");
+    listCategoriesContainer.className = "listCategoriesContainer";
+    const listCategoriesInLocalStorage = JSON.parse(
+      localStorage.getItem("listCategories")
+    );
+    if (listCategoriesInLocalStorage) {
+      listCategoriesInLocalStorage.forEach((item) => {
+        const list = document.createElement("li");
+        list.innerText = item;
+        list.setAttribute("category", item);
+
+        listCategoriesContainer.appendChild(list);
+        return list;
+      });
+      containerCategories.appendChild(listCategoriesContainer);
+    }
+    const inputCategory = document.createElement("input");
+    inputCategory.className = "inputCategory";
+    inputCategory.placeholder = "Enter category";
+    containerCategories.appendChild(inputCategory);
+    options.appendChild(containerCategories);
+    this.choosedCategory();
+  }
+  choosedCategory() {
+    const lists = document.querySelectorAll(
+      ".options .listCategoriesContainer li"
+    );
+    const inputCategory = document.querySelector(
+      ".options input.inputCategory"
+    );
+    let prevList;
+    lists.forEach((list) => {
+      list.addEventListener("click", () => {
+        list.classList.toggle("choosed");
+        if (prevList) {
+          prevList.classList.remove("choosed");
+          prevList = list;
+          prevList.classList.add("choosed");
+          this._currentCategory = prevList.innerText;
+        } else {
+          prevList = list;
+          prevList.classList.add("choosed");
+          this._currentCategory = prevList.innerText;
+        }
+      });
+    });
+
+    inputCategory.addEventListener("input", (e) => {
+      console.log("changed");
+      if (e.target.value) {
+        if (prevList) {
+          prevList.classList.remove("choosed");
+          prevList = undefined;
+        }
+        this._currentCategory = e.target.value;
+      }
+    });
   }
 }
 
