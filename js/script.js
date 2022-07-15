@@ -75,10 +75,11 @@ class Demo {
 
   //this function receives the number of the item  in the html
   //you can see them in html or here they are
+  //totic this tomporary added  for examples maybe i gonna change the plase holder or the classes later
   //<li>Defintion</li>
   //    <li> picture</li>
-  //    <li>phonetic </li>
-  //    <li> sentence example</li>
+  //    <li>pronunciatin Symbols </li>
+  //    <li>  example sentence</li>
   //if the first one the function gonna definition input
   //and it gonna save it in localStorage by others function they are self-explantory
   //and same with  others
@@ -106,8 +107,9 @@ class Demo {
       case 2:
         if (!this._checkPhonemes) return;
         this.makeInputFun({
-          className: "addPhonemeInp",
-          placeholder: "Enter the phonetic alphabet or let the server put it",
+          className: "pronunciationSymbolsInp",
+          placeholder:
+            "Enter Pronunciation Symbols Or Keep It Empty It'll automatically be added",
           type: "text",
         });
         this._checkPhonemes = false;
@@ -229,56 +231,62 @@ class Demo {
   //and customize it and save it by saveToLocalStorage function
   async saveWord(imgString) {
     this.mainword = document.querySelector(".mainWordInp").value;
-    let mainSentence;
-    let phonemes;
+    let definition;
+    let pronunciatinSymbols;
     let audio;
     let textAndAudioApi;
-    const phonemesClass = new phoneticsAlphabetApiManger(this.mainword);
+    const pronunciationSymbolsApiClass =
+      new fetchApiClassForPronuciationAndDefAndEtc(this.mainword);
     // i did that "if statement" coz it show err can't read properties of null value
     if (document.querySelector("input.addDefinition")) {
       if (document.querySelector("input.addDefinition").value) {
-        mainSentence = document.querySelector("input.addDefinition").value;
+        definition = document.querySelector("input.addDefinition").value;
       }
     }
-    let phonemeInp = document.querySelector("input.addPhonemeInp");
+    let pronunciationSymbolsInp = document.querySelector(
+      "input.pronunciationSymbolsInp"
+    );
     let anotherSentenceInp = document.querySelectorAll(
       "input#anotherSentenceInp"
     );
 
     if (!this.mainword) return alert("please Enter the vocabulary to save");
-    let anotherMeaninigSentecesArr = [];
+    let sentencesExample = [];
     anotherSentenceInp.forEach((item) => {
       if (item.value) {
-        anotherMeaninigSentecesArr.push(item.value);
+        sentencesExample.push(item.value);
       }
     });
     //the random color in fetchfromlocalstorage.js to add border
     const randomColor = Math.floor(Math.random() * 16777215).toString(16);
 
     const imgChoosed = imgChoosedUrl ? imgChoosedUrl : imgString;
-    if (phonemeInp) {
-      if (phonemeInp.value) {
-        phonemes = `/${phonemeInp.value}/`;
+    if (pronunciationSymbolsInp) {
+      if (pronunciationSymbolsInp.value) {
+        pronunciatinSymbols = `/${pronunciationSymbolsInp.value}/`;
       } else {
-        textAndAudioApi = await phonemesClass.fetchApi();
+        textAndAudioApi = await pronunciationSymbolsApiClass.fetchApi();
         audio = textAndAudioApi.audio;
-        phonemes = textAndAudioApi.text;
-        console.log(phonemes);
+        pronunciatinSymbols = textAndAudioApi.text;
+        console.log(pronunciatinSymbols);
       }
     } else {
-      textAndAudioApi = await phonemesClass.fetchApi();
+      textAndAudioApi = await pronunciationSymbolsApiClass.fetchApi();
       audio = textAndAudioApi.audio;
-      phonemes = textAndAudioApi.text;
-      console.log(phonemes);
+      pronunciatinSymbols = textAndAudioApi.text;
+      console.log(pronunciatinSymbols);
     }
     const SaveToLocal = {
       mainworld: this.mainword,
-      mainSentence: mainSentence ? mainSentence : null,
-      numberOfMeaninig: anotherMeaninigSentecesArr.length,
+      // why this called mainSentence and the value definition instead wand phonetics instead of pronunciatin Symbols
+      //well i made some errors gramers befor i could edded them but i have somefriend use this so they gonne
+      //loos thier data i can fix it by loop through all the localStorage data and change their value it won't make a big now if it require to change them i'll do
+      mainSentence: definition ? definition : null,
+      numberOfMeaninig: sentencesExample.length,
       audio: audio,
-      phoneme: phonemes,
+      phoneme: pronunciatinSymbols,
       pic: imgChoosed,
-      anotherSentenceWithNewMeaning: anotherMeaninigSentecesArr,
+      anotherSentenceWithNewMeaning: sentencesExample,
       randomColor: randomColor,
       date: new Date(),
     };
@@ -322,15 +330,12 @@ class Demo {
           window.location.reload();
         }
       } else {
-	     //if the user select category and there is no  categories array in localStorage  
-        localStorage.setItem(
-          "listCategories",
-		JSON.stringify([])
-        );
-        return   this.saveToLocalStorage(params, currentNumberOfWords); 
+        //if the user select category and there is no  categories array in localStorage
+        localStorage.setItem("listCategories", JSON.stringify([]));
+        return this.saveToLocalStorage(params, currentNumberOfWords);
       }
     } else {
-	    // if the user didn'nt select any category
+      // if the user didn'nt select any category
       localStorage.setItem(
         `word.${currentNumberOfWords}`,
         JSON.stringify(params)
@@ -360,7 +365,7 @@ class Demo {
           case "addPic":
             this._checkPic = true;
             break;
-          case "addPhonemeInp":
+          case "pronunciationSymbolsInp":
             this._checkPhonemes = true;
             break;
         }
@@ -539,15 +544,15 @@ class fetchAndDisplayImgsApi {
   }
 }
 
-class phoneticsAlphabetApiManger {
-  constructor(wordToGetphonetics) {
-    this.wordToGetphonetics = wordToGetphonetics;
-    this.phonetics = { text: null, audio: null };
+class fetchApiClassForPronuciationAndDefAndEtc {
+  constructor(wordToGetInfoAboutIt) {
+    this.wordToGetInfoAboutIt = wordToGetInfoAboutIt;
+    this.fetchedData = { text: null, audio: null };
   }
 
   async fetchApi() {
     try {
-      const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${this.wordToGetphonetics}`;
+      const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${this.wordToGetInfoAboutIt}`;
       const response = await axios({
         url: url,
         method: "get",
@@ -557,7 +562,7 @@ class phoneticsAlphabetApiManger {
         //choose the item when have audio and text
         if ("text" in item && "audio" in item) {
           if (item.text && item.audio) {
-            this.phonetics = {
+            this.fetchedData = {
               text: item.text,
               audio: item.audio,
             };
@@ -565,9 +570,9 @@ class phoneticsAlphabetApiManger {
           }
         }
       });
-      return this.phonetics;
+      return this.fetchedData;
     } catch (error) {
-      return this.phonetics;
+      return this.fetchedData;
     }
   }
 }

@@ -3,39 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-<title>vocabularies</title>
-    <link rel="shortcut icon" href="../imgs/bookIcon.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vocabularies</title>
+    <link rel="shortcut icon" href="../imgs/bookIcon.png" type="image/png" />
     <link rel="stylesheet" href="../css/commonStyles.css" />
     <link rel="stylesheet" href="../css/words.css" />
     <script defer src="../js/commonScripts.js"></script>
     <script defer src="../js/words.js"></script>
-    
   </head>
   <body>
     <!-- ------start of nav bar--------- -->
-    
+
     <div class="menu pagesMenu">
       <span></span>
       <span></span>
       <span></span>
     </div>
     <ul class="pagesList">
-      <li> <a href="/">  Insert a vocabulary page 📝  .</a></li>
-      <li> <a href="/html/words.html"> revision for the saved vocabularies page 🔂 .</a></li>
-      <li> <a href="/html/quiz.html">quiz</a></li>
-
-      </ul>
+      <li><a href="/"> Insert vocabulary 📝 </a></li>
+      <li>
+        <a href="/html/words.html"> show saved vocabulary 🔂 </a>
+      </li>
+      <li><a href="/html/quiz.html">quiz (not completed yet BETA)</a></li>
+    </ul>
     <!-- -------end of nav bar---------- -->
     <button class="bakcArrowButton">
-        <img src="/imgs/backArrow.png" alt="back" class="backArrowImg">  
+      <img src="/imgs/backArrow.png" alt="back" class="backArrowImg" />
     </button>
-    <div class="categoriesContainer active"> 
-    </div>
+    <div class="categoriesContainer active"></div>
     <div class="containerWords">
       <button class="repeatBtn">
-        <img src="/imgs/repeat.png" alt="repeat img" class="repeatIconImg">  
+        <img src="/imgs/repeat.png" alt="repeat img" class="repeatIconImg" />
       </button>
+      <!-- 
+	      these elements will append by word.js file in this form -->
       <!-- <div class="containerWordInfo">
         <div class="word">
           confident
@@ -48,32 +49,26 @@
         > </div
       >
       </div> -->
-
     </div>
 
-
-
-    <!-- full info of the word -->
-    <div class="fullInfoOfWord ">
-        <div class="menu close wordFullInfoClose active">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <button id="stopBtn" class="stopBtn">stop</button>
-        <button  class="pauseBtn">pause</button>
-        <div class="containerFullInfo">
-
-          <div class="mainword"></div>
-          <div class="mainSentence"></div>
-          <div class="phonemes"></div>
-          <img class='img' alt="">
-          <!-- <div class="img">img  </div> -->
-          <!-- <div class="anotherSentences">anotherSentences</div> -->
-          
-        </div>
-
+    <!-- full info of the word that clicked-->
+    <div class="fullInfoOfWord">
+      <div class="menu close wordFullInfoClose active">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <button id="stopBtn" class="stopBtn">stop</button>
+      <button class="pauseBtn">pause</button>
+      <div class="containerFullInfo">
+        <div class="mainword"></div>
+        <!-- this mmain sentence replaced with definition but i kept it coz there are some people use this web app so they gonna loos there data if i change it i think i could change later  -->
+        <div class="mainSentence"></div>
+        <div class="phonemes"></div>
+        <img class="img" alt="" />
+        <!-- <div class="img">img  </div> -->
+        <!-- <div class="anotherSentences">anotherSentences</div> -->
+      </div>
     </div>
-    
   </body>
 </html>

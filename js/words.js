@@ -6,8 +6,8 @@ const stopBtn = document.querySelector("button#stopBtn");
 const pauseBtn = document.querySelector("button.pauseBtn ");
 const categoriesContainer = document.querySelector(".categoriesContainer");
 const bakcArrowButton = document.querySelector(".bakcArrowButton");
-//localStorage.setItem('number','121')
-//localStorage.removeItem('word.122')
+//localStorage.setItem('numberOf.business','2')
+//localStorage.removeItem('business.3')
 class allOprations {
   constructor() {
     // mybe you thought why i do that
@@ -41,9 +41,9 @@ class allOprations {
     pElement.innerText = nameOfCategory;
     imgForCategory.src = "/imgs/file.png";
     imgForCategory.className = "categoryImg ";
-	  if(nameOfCategory == 'word'){
-		  pElement.innerText = 'general'
-	  }
+    if (nameOfCategory == "word") {
+      pElement.innerText = "general";
+    }
     categoryDiv.append(imgForCategory, pElement);
     categoriesContainer.append(categoryDiv);
     const allCategoriesElements = document.querySelectorAll(".category");
@@ -168,8 +168,8 @@ class allOprations {
           break;
 
         default:
-        //  containerWordInfo.style.display = "none";
-         this.numbersForInterval.push(i);
+          //  containerWordInfo.style.display = "none";
+          this.numbersForInterval.push(i);
           break;
       }
       // // this function  'openFullInfoAboutTheWord ' make the pop-up
@@ -310,7 +310,7 @@ class allOprations {
           wordFullInfoCloseBTN.classList.add("active");
           this.currentNumberToFetch = 0;
           clearInterval(repeatIntervalFun);
-	bakcArrowButton.className = 'bakcArrowButton active' 
+          bakcArrowButton.className = "bakcArrowButton active";
           return;
         }
 
