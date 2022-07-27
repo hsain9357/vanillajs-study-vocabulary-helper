@@ -8,6 +8,9 @@ const categoriesContainer = document.querySelector(".categoriesContainer");
 const bakcArrowButton = document.querySelector(".bakcArrowButton");
 //localStorage.setItem('numberOf.business','2')
 //localStorage.removeItem('business.3')
+
+//localStorage.setItem('number','165')
+//localStorage.removeItem('word.166')
 class allOprations {
   constructor() {
     // mybe you thought why i do that
@@ -151,27 +154,36 @@ class allOprations {
         (currentDate.getTime() - wordTime.getTime()) / 86400000
       );
 
-      switch (difference) {
-        case 0:
-          this.numbersForInterval.push(i);
-          break;
-        case 1:
-          this.numbersForInterval.push(i);
-          break;
+      //switch (difference) {
+      //   case :
+      //   this.numbersForInterval.push(i);
+      //    break;
+      
+      
+    //  if (difference < 7) {
+        this.numbersForInterval.push(i);
+      //} else {
+    //    containerWordInfo.style.display = "none";
+  //    }
+  
+  
+      // case 1:
+      //     this.numbersForInterval.push(i);
+      //     break;
+      //
+      //   case 7:
+      //     this.numbersForInterval.push(i);
+      //   break;
 
-        case 7:
-          this.numbersForInterval.push(i);
-          break;
+      //    case 30:
+      //       this.numbersForInterval.push(i);
+      //    break;
 
-        case 30:
-          this.numbersForInterval.push(i);
-          break;
-
-        default:
-          //  containerWordInfo.style.display = "none";
-          this.numbersForInterval.push(i);
-          break;
-      }
+      //  default:
+      //     containerWordInfo.style.display = "none";
+      //  this.numbersForInterval.push(i);
+      //   break;
+      //   }
       // // this function  'openFullInfoAboutTheWord ' make the pop-up
       //  show all info about the word
       // like the phonemes and all the others meaning of it
@@ -205,12 +217,28 @@ class allOprations {
     const mainInfo = JSON.parse(
       localStorage.getItem(`${category}.${numberElement}`)
     );
+      const hearIt = document.createElement("button");
+      const styleHearIt = hearIt.style;
+      styleHearIt.width = "50px";
+      styleHearIt.height = "50px";
+
+      hearIt.innerHTML = "&#9654;";
+      hearIt.className = "hearIt";
+	  hearIt.style.display = 'none'
+      hearIt.onclick = () => {
+	audio.play();
+	      audio.addEventListener('ended',() => {
+		      audio2.play()
+
+	      })
+      };
+      fullInfoOfWord.appendChild(hearIt);
     if (mainInfo && mainInfo.mainworld) {
       mainword.innerText = mainInfo.mainworld;
     }
 
     if (mainInfo && mainInfo.phoneme) {
-      phonemes.innerText = "phonetics :" + mainInfo.phoneme;
+      phonemes.innerText = "pronunciation:" + mainInfo.phoneme;
     }
     if (mainInfo && mainInfo.randomColor) {
       if (mainInfo.randomColor.length == 5) {
@@ -223,30 +251,30 @@ class allOprations {
       mainSentence.innerText = mainInfo.mainSentence;
     }
 
-    if (mainInfo && mainInfo.audio) {
-      const audio = document.createElement("audio");
-      audio.loop = false;
-      audio.src = mainInfo.audio;
-      if (shouldPlayAudio) {
-        audio.play();
-      }
-      if (shouldAppendPlayButton) {
-        const hearIt = document.createElement("button");
-        const styleHearIt = hearIt.style;
-        styleHearIt.width = "50px";
-        styleHearIt.height = "50px";
 
-        hearIt.innerHTML = "&#9654;";
-        hearIt.className = "hearIt";
-        hearIt.onclick = () => {
-          audio.play();
-        };
-        if (shouldMakeCloseButtonVisable) {
-          wordFullInfoCloseBTN.classList.add("active");
-        }
-        fullInfoOfWord.appendChild(hearIt);
-      }
+    let url =
+      "https://studyvocabularyhelper.herokuapp.com/speech?" +
+      new URLSearchParams({
+        text: mainInfo.mainworld,
+      });
+	  let  allText = '';
+	    let  audio	  ;
+	  if(mainInfo.audio){
+		audio = new Audio(mainInfo.audio);
+
+	  }else{
+	audio= new Audio(url);
+	  }
+    if (shouldAppendPlayButton) {
+	    hearIt.style.display  = 'block'
     }
+    if (shouldPlayAudio) {
+	audio.play();
+    }
+      if (shouldMakeCloseButtonVisable) {
+        wordFullInfoCloseBTN.classList.add("active");
+      }
+    //}
 
     if (mainInfo && mainInfo.pic) {
       const newImg = document.createElement("img");
@@ -259,10 +287,18 @@ class allOprations {
       mainInfo.anotherSentenceWithNewMeaning.forEach((item) => {
         const anotherSentenceElement = document.createElement("div");
         anotherSentenceElement.className = "anotherSentences";
+	      allText+= '.' + item
         anotherSentenceElement.innerText = item;
         fullInfoOfWord.appendChild(anotherSentenceElement);
       });
     }
+    let url2 =
+      "https://studyvocabularyhelper.herokuapp.com/speech?" +
+      new URLSearchParams({
+        text: allText,
+      });
+	  const audio2 = new Audio(url2)
+
 
     fullInfoOfWord.classList.add("active");
   }
@@ -270,8 +306,10 @@ class allOprations {
   togglePause() {
     this.isPaused = !this.isPaused;
     if (this.isPaused) {
+	document.querySelector('.hearIt').style.display = 'block'
       pauseBtn.innerText = "continue";
     } else {
+	document.querySelector('.hearIt').style.display = 'none'
       pauseBtn.innerText = "pause";
     }
   }
@@ -320,7 +358,7 @@ class allOprations {
           this.numbersForInterval[this.currentNumberToFetch],
           true,
           false,
-          true,
+          false,
           this.currentCategory
         );
         if (this.currentNumberToFetch == this.numbersForInterval.length) {
@@ -343,7 +381,7 @@ class allOprations {
       this.numbersForInterval[this.currentNumberToFetch],
       true,
       false,
-      true,
+      false,
       this.currentCategory
     );
     this.currentNumberToFetch = 1;
