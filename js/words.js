@@ -6,16 +6,11 @@ const stopBtn = document.querySelector("button#stopBtn");
 const pauseBtn = document.querySelector("button.pauseBtn ");
 const categoriesContainer = document.querySelector(".categoriesContainer");
 const bakcArrowButton = document.querySelector(".bakcArrowButton");
-//localStorage.setItem('numberOf.business','2')
-//localStorage.removeItem('business.3')
-
-//localStorage.setItem('number','165')
-//localStorage.removeItem('word.166')
+// localStorage.setItem('number','165')
+// localStorage.removeItem('word.166')
 class allOprations {
   constructor() {
-    // mybe you thought why i do that
-    // the initialize function
-    // release instenly when i use the class you can see it in the buttom of this script
+
     this.shouldInterval = false;
     this.numbersForInterval = [];
     this.currentNumberToFetch = 0;
@@ -23,14 +18,12 @@ class allOprations {
     this.initialize();
   }
   initialize() {
-    const categoriesInLocalStorage = JSON.parse(
-      localStorage.getItem("listCategories")
-    );
+    const categoriesInLocalStorage =
+        JSON.parse(localStorage.getItem("listCategories"));
     this.createCategory("word");
     if (categoriesInLocalStorage) {
-      categoriesInLocalStorage.forEach((item) => {
-        this.createCategory(item);
-      });
+      categoriesInLocalStorage.forEach(
+          (item) => { this.createCategory(item); });
     }
     this.allEvets();
   }
@@ -54,7 +47,8 @@ class allOprations {
       item.addEventListener("click", () => {
         const clickedCategory = item.getAttribute("category");
         if (clickedCategory === "word") {
-          // number in localStorage means unclassified (the user didn't specify it in a category)
+          // 'number' in localStorage means unclassified (the user didn't specify
+          // it in a category)
           bakcArrowButton.classList.add("active");
           categoriesContainer.classList.remove("active");
           const numberOfWordToFetch = parseInt(localStorage.getItem("number"));
@@ -62,9 +56,8 @@ class allOprations {
         } else {
           bakcArrowButton.classList.add("active");
           categoriesContainer.classList.remove("active");
-          const numberOfWordToFetch = parseInt(
-            localStorage.getItem(`numberOf.${clickedCategory}`)
-          );
+          const numberOfWordToFetch =
+              parseInt(localStorage.getItem(`numberOf.${clickedCategory}`));
           this.fetchLocalStorage(clickedCategory, numberOfWordToFetch);
         }
       });
@@ -78,7 +71,8 @@ class allOprations {
     });
     repeatBtn.onclick = () => {
       let timeToRepeat = prompt("speed per second", 5);
-      if (!timeToRepeat) return;
+      if (!timeToRepeat)
+        return;
       timeToRepeat = timeToRepeat * 1000;
       this.shouldInterval = true;
       this.startRepeatSavedWords(timeToRepeat);
@@ -89,9 +83,7 @@ class allOprations {
       wordFullInfoCloseBTN.classList.add("active");
       this.shouldInterval = false;
     };
-    pauseBtn.onclick = () => {
-      this.togglePause();
-    };
+    pauseBtn.onclick = () => { this.togglePause(); };
     bakcArrowButton.onclick = () => {
       bakcArrowButton.classList.remove("active");
       categoriesContainer.classList.add("active");
@@ -109,9 +101,8 @@ class allOprations {
     // </div>;
 
     this.currentCategory = category;
-    document
-      .querySelectorAll(".containerWordInfo")
-      .forEach((item) => item.remove());
+    document.querySelectorAll(".containerWordInfo")
+        .forEach((item) => item.remove());
     if (!numberOfWordToFetch) {
       containerWords.append("Empty!");
     }
@@ -148,25 +139,23 @@ class allOprations {
 
       containerWordInfo.appendChild(sentence);
       containerWords.appendChild(containerWordInfo);
-      const wordTime = new Date(mainInfo.date);
-      const currentDate = new Date();
-      const difference = Math.floor(
-        (currentDate.getTime() - wordTime.getTime()) / 86400000
-      );
+      // const wordTime = new Date(mainInfo.date);
+      // const currentDate = new Date();
+      //  const difference =
+      //      Math.floor((currentDate.getTime() - wordTime.getTime()) /
+      //      86400000);
+      //  this will be added to sort by date
+      //   switch (difference) {
+      //      case :
+      //      this.numbersForInterval.push(i);
+      //       break;
 
-      //switch (difference) {
-      //   case :
-      //   this.numbersForInterval.push(i);
-      //    break;
-      
-      
-    //  if (difference < 7) {
-        this.numbersForInterval.push(i);
+      //  if (difference < 7) {
+      this.numbersForInterval.push(i);
       //} else {
-    //    containerWordInfo.style.display = "none";
-  //    }
-  
-  
+      //    containerWordInfo.style.display = "none";
+      //    }
+
       // case 1:
       //     this.numbersForInterval.push(i);
       //     break;
@@ -185,14 +174,14 @@ class allOprations {
       //   break;
       //   }
       // // this function  'openFullInfoAboutTheWord ' make the pop-up
-      //  show all info about the word
+      //  show all info about a word
       // like the phonemes and all the others meaning of it
 
       this.openFullInfoAboutTheWord(containerWordInfo, category);
     }
   }
   openFullInfoAboutTheWord(element, category) {
-    // it's seme complex but its work is simple just fetch
+    // it's seem complex but its work is simple just fetch
     // the localStorage and put data the container of it
     // i already put style to the container you can find it
     // in word.css named .fullInfoOfWord .
@@ -203,36 +192,30 @@ class allOprations {
     });
   }
 
-  appendFullInfoFun(
-    numberElement,
-    shouldPlayAudio = false,
-    shouldAppendPlayButton = true,
-    shouldMakeCloseButtonVisable = false,
-    category = "word"
-  ) {
+  appendFullInfoFun(numberElement, shouldPlayAudio = false,
+                    shouldAppendPlayButton = true,
+                    shouldMakeCloseButtonVisable = false, category = "word") {
     const mainword = document.querySelector(".mainword");
     const phonemes = document.querySelector(".phonemes");
     const mainSentence = document.querySelector(".mainSentence");
     bakcArrowButton.className = "bakcArrowButton";
-    const mainInfo = JSON.parse(
-      localStorage.getItem(`${category}.${numberElement}`)
-    );
-      const hearIt = document.createElement("button");
-      const styleHearIt = hearIt.style;
-      styleHearIt.width = "50px";
-      styleHearIt.height = "50px";
+    const mainInfo =
+        JSON.parse(localStorage.getItem(`${category}.${numberElement}`));
+    const hearIt = document.createElement("button");
+    const styleHearIt = hearIt.style;
+    styleHearIt.width = "50px";
+    styleHearIt.height = "50px";
 
-      hearIt.innerHTML = "&#9654;";
-      hearIt.className = "hearIt";
-	  hearIt.style.display = 'none'
-      hearIt.onclick = () => {
-	audio.play();
-	      audio.addEventListener('ended',() => {
-		      audio2.play()
+    hearIt.innerHTML = "&#9654;";
+    hearIt.className = "hearIt";
+    hearIt.style.display = 'none'
+    hearIt.onclick = () => {
+      audio.play();
+      audio.addEventListener('ended', () => {audio2.play()
 
-	      })
-      };
-      fullInfoOfWord.appendChild(hearIt);
+                                      })
+    };
+    fullInfoOfWord.appendChild(hearIt);
     if (mainInfo && mainInfo.mainworld) {
       mainword.innerText = mainInfo.mainworld;
     }
@@ -251,29 +234,27 @@ class allOprations {
       mainSentence.innerText = mainInfo.mainSentence;
     }
 
+    let url = "https://studyvocabularyhelper.herokuapp.com/speech?" +
+              new URLSearchParams({
+                text : mainInfo.mainworld,
+              });
+    let allText = '';
+    let audio;
+    if (mainInfo.audio) {
+      audio = new Audio(mainInfo.audio);
 
-    let url =
-      "https://studyvocabularyhelper.herokuapp.com/speech?" +
-      new URLSearchParams({
-        text: mainInfo.mainworld,
-      });
-	  let  allText = '';
-	    let  audio	  ;
-	  if(mainInfo.audio){
-		audio = new Audio(mainInfo.audio);
-
-	  }else{
-	audio= new Audio(url);
-	  }
+    } else {
+      audio = new Audio(url);
+    }
     if (shouldAppendPlayButton) {
-	    hearIt.style.display  = 'block'
+      hearIt.style.display = 'block'
     }
     if (shouldPlayAudio) {
-	audio.play();
+      audio.play();
     }
-      if (shouldMakeCloseButtonVisable) {
-        wordFullInfoCloseBTN.classList.add("active");
-      }
+    if (shouldMakeCloseButtonVisable) {
+      wordFullInfoCloseBTN.classList.add("active");
+    }
     //}
 
     if (mainInfo && mainInfo.pic) {
@@ -287,18 +268,16 @@ class allOprations {
       mainInfo.anotherSentenceWithNewMeaning.forEach((item) => {
         const anotherSentenceElement = document.createElement("div");
         anotherSentenceElement.className = "anotherSentences";
-	      allText+= '.' + item
+        allText += '.' + item
         anotherSentenceElement.innerText = item;
         fullInfoOfWord.appendChild(anotherSentenceElement);
       });
     }
-    let url2 =
-      "https://studyvocabularyhelper.herokuapp.com/speech?" +
-      new URLSearchParams({
-        text: allText,
-      });
-	  const audio2 = new Audio(url2)
-
+    let url2 = "https://studyvocabularyhelper.herokuapp.com/speech?" +
+               new URLSearchParams({
+                 text : allText,
+               });
+    const audio2 = new Audio(url2)
 
     fullInfoOfWord.classList.add("active");
   }
@@ -306,10 +285,10 @@ class allOprations {
   togglePause() {
     this.isPaused = !this.isPaused;
     if (this.isPaused) {
-	document.querySelector('.hearIt').style.display = 'block'
+      document.querySelector('.hearIt').style.display = 'block'
       pauseBtn.innerText = "continue";
     } else {
-	document.querySelector('.hearIt').style.display = 'none'
+      document.querySelector('.hearIt').style.display = 'none'
       pauseBtn.innerText = "pause";
     }
   }
@@ -320,15 +299,14 @@ class allOprations {
     const img = document.querySelector(".fullInfoOfWord .img");
     const audioToRemove = document.querySelector(".hearIt");
 
-    if (audioToRemove) audioToRemove.remove();
-    const anotherSentences = document.querySelectorAll(
-      ".fullInfoOfWord .anotherSentences"
-    );
-    if (img) img.remove();
+    if (audioToRemove)
+      audioToRemove.remove();
+    const anotherSentences =
+        document.querySelectorAll(".fullInfoOfWord .anotherSentences");
+    if (img)
+      img.remove();
     if (anotherSentences) {
-      anotherSentences.forEach((item) => {
-        item.remove();
-      });
+      anotherSentences.forEach((item) => { item.remove(); });
     }
     document.querySelector(".mainword").innerText = "";
     document.querySelector(".phonemes").innerText = "";
@@ -355,12 +333,8 @@ class allOprations {
         this.clearPreviousDatafromFullInfoWord();
 
         this.appendFullInfoFun(
-          this.numbersForInterval[this.currentNumberToFetch],
-          true,
-          false,
-          false,
-          this.currentCategory
-        );
+            this.numbersForInterval[this.currentNumberToFetch], true, false,
+            false, this.currentCategory);
         if (this.currentNumberToFetch == this.numbersForInterval.length) {
           this.currentNumberToFetch = 0;
           this.clearPreviousDatafromFullInfoWord();
@@ -377,13 +351,8 @@ class allOprations {
     pauseBtn.classList.add("active");
     wordFullInfoCloseBTN.classList.remove("active");
     this.clearPreviousDatafromFullInfoWord();
-    this.appendFullInfoFun(
-      this.numbersForInterval[this.currentNumberToFetch],
-      true,
-      false,
-      false,
-      this.currentCategory
-    );
+    this.appendFullInfoFun(this.numbersForInterval[this.currentNumberToFetch],
+                           true, false, false, this.currentCategory);
     this.currentNumberToFetch = 1;
     repeatIntervalFun = setInterval(interavlOprations, timeToRepeat);
   }
