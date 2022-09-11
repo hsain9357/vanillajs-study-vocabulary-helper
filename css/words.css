@@ -3,8 +3,7 @@ body {
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: hidden;
+overflow: hidden;
 }
 .pagesMenu span {
   background-color: #96c1f7;
@@ -14,18 +13,17 @@ body {
   height: 100vh;
   width: 100vw;
   padding-top: 2em;
-  background-image: linear-gradient(120deg, black, white);
-  background-image: -moz-linear-gradient(120deg, black, white);
-  background-image: -webkit-linear-gradient(120deg, black, white);
-  background-image: -o-linear-gradient(120deg, black, white);
   flex-direction: column;
+  background-image: url("../imgs/background.jpg");
+  background-size: cover;
+  background-position: center center;
   gap: 1em;
 }
 .categoriesContainer.active {
   display: flex;
 }
 .categoriesContainer .category {
-  background-color: blue;
+  background-color: #5E76D8;
   width: 100%;
   height: 5em;
   display: flex;
@@ -85,11 +83,9 @@ body {
   object-fit: contain;
 }
 .containerWords {
-  /* background-color:darkgray ; */
-  background-image: linear-gradient(120deg, black, white);
-  background-image: -moz-linear-gradient(120deg, black, white);
-  background-image: -webkit-linear-gradient(120deg, black, white);
-  background-image: -o-linear-gradient(120deg, black, white);
+  background-image: url("../imgs/background.jpg");
+  background-size: cover;
+  background-position: center center;
   width: 100%;
   height: 102%;
   display: flex;
